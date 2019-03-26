@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,6 +61,7 @@ public class SampleData {
                         "برگ ها خشک و چروک دار هستند:\n" +
                         "گیاه تشنه و هوا خشک است .فورا آبیاری کنید .هر هفته دو یا سه بار غبارپاشی کنید.\n")
                 .withSpecs(specs1)
+                .withFavourite(true)
                 .build();
 
 
@@ -81,6 +83,7 @@ public class SampleData {
                 .withIdentity("گیاهی  ملی است که همواره با گل لاله عباسی قبل از اینکه گل های دیگر وارد ایران شوند مورد نگهداری بوده است . آرایش این گل در لبه حوض خانه های قدیمی مشهور و خاطره انگیز است . این گیاه علاوه بر حوض خانه های قدیمی مشهور و خاطره انگیز است . امکان کاشت در باغچه ها در گلدان و در محیط های بسته نیز قابل نگهداری است . ازدیاد آن بسیار ساده و با قلمه صورت می گیرد ، واریته های بذری پر گل هم اکنون در ایران موجود است و در ایام عید و بهار به فروش می رشند")
 //                .withHerbals("")
                 .withSpecs(specs2)
+                .withFavourite(false)
                 .build();
 
         entities.add(plant1);
@@ -93,9 +96,9 @@ public class SampleData {
      *
      * in case you want to load data from assets folder
      *
-     * @param context
-     * @param fileName
-     * @return
+     * @param context for getting assets folder
+     * @param fileName name of the asset file
+     * @return a list of plants
      *
      *
      */
@@ -107,7 +110,7 @@ public class SampleData {
             byte[] buffer = new byte[size];
             inputStream.read(buffer);
             inputStream.close();
-            json = new String(buffer, "UTF-8");
+            json = new String(buffer, StandardCharsets.UTF_8);
 
         } catch (IOException e) {
             e.printStackTrace();

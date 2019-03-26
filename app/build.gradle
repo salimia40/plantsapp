@@ -55,5 +55,7 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     // Json converter
-    implementation 'com.google.code.gson:gson:2.8.5'
+    // actually it is added by above library no need to add again
+    // its just to know it is in project
+    // implementation 'com.google.code.gson:gson:2.8.5'
 }

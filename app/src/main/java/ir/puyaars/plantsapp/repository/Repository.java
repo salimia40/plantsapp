@@ -20,6 +20,7 @@ public class Repository {
     private static Repository ourInstance;
 
     public LiveData<List<PlantEntity>> mPlants;
+    public LiveData<List<PlantEntity>> fPlants;
     private PlantsDatabase database;
     private Executor executor = Executors.newSingleThreadExecutor();
     private WepApi network;
@@ -34,6 +35,11 @@ public class Repository {
     private Repository(Context context) {
         database = PlantsDatabase.getInstance(context);
         mPlants = getLocalPlants();
+        fPlants = getFavouritePlants();
+    }
+
+    private LiveData<List<PlantEntity>> getFavouritePlants() {
+        return database.plantDao().getPlantByFavourite(true);
     }
 
     private LiveData<List<PlantEntity>> getLocalPlants() {
@@ -74,6 +80,11 @@ public class Repository {
         return this;
     }
 
+     /**
+     * initiates web api and gets all plants
+     *
+     * @param baseURL api main domain
+     */
     public void initNetwork(String baseURL) {
         network = Network.BuildApi(baseURL);
         executor.execute(() -> {
@@ -89,11 +100,12 @@ public class Repository {
         });
     }
 
+
     public PlantEntity getPlantById(int plantId) {
         return database.plantDao().getPlantById(plantId);
     }
 
     public void savePlant(PlantEntity mPlant) {
-        executor.execute(() -> database.plantDao().insertPlant(mPlant));
+        database.plantDao().insertPlant(mPlant);
     }
 }

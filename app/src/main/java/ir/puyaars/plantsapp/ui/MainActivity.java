@@ -1,38 +1,30 @@
 package ir.puyaars.plantsapp.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ir.puyaars.plantsapp.R;
-import ir.puyaars.plantsapp.repository.entities.PlantEntity;
-import ir.puyaars.plantsapp.repository.utils.Const;
 
 public class MainActivity extends AppCompatActivity {
 
 
-    private MainViewModel presenter;
-    private List<PlantEntity> plantsList = new ArrayList<>();
     private PlantAdapter adapter;
+    private MainViewModel presenter;
 
-    RecyclerView recyclerView;
+    // filter the plants by favourite
+    private Boolean favFilter = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -42,14 +34,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecycler() {
-        recyclerView = findViewById(R.id.recycler);
+        RecyclerView recyclerView = findViewById(R.id.recycler);
         adapter = new PlantAdapter(this);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
 
         DividerItemDecoration decoration = new DividerItemDecoration(
-                recyclerView.getContext(),manager.getOrientation()
+                recyclerView.getContext(), manager.getOrientation()
         );
 
         recyclerView.addItemDecoration(decoration);
@@ -60,17 +52,27 @@ public class MainActivity extends AppCompatActivity {
 
     private void initPresenter() {
 
-        final Observer<List<PlantEntity>> observer = plantEntities -> {
-            plantsList.clear();
-            plantsList.addAll(plantEntities);
-            // TODO UI CHANGE
-            Log.i(Const.TAG, "initPresenter: " + plantEntities);
-            adapter.setPlants(plantsList);
-//            adapter.notifyDataSetChanged();
-        };
-
         presenter = ViewModelProviders.of(this).get(MainViewModel.class);
-        presenter.mPlants.observe(this,observer);
+
+        presenter.mPlants.observe(this, plantEntities -> {
+            if (!favFilter) {
+                adapter.setPlants(plantEntities);
+            }
+        });
+
+        presenter.fPlants.observe(this, plantEntities -> {
+            if (favFilter) {
+                adapter.setPlants(plantEntities);
+            }
+        });
+
+    }
+
+
+    // TODO call this so adapter will update
+    private void onFilterChanged(boolean favFilter) {
+        if (favFilter) adapter.setPlants(presenter.fPlants.getValue());
+        else adapter.setPlants(presenter.mPlants.getValue());
     }
 
     @Override
@@ -86,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        // TODO favourite filter changer item
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

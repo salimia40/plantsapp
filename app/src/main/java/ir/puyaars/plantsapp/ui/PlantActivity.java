@@ -29,14 +29,14 @@ public class PlantActivity extends AppCompatActivity {
 
         initPresenter();
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            // TODO favorite the plant
-            if (mPlant != null) {
-                mPlant.setFavourite(!mPlant.isFavourite());
-                presenter.savePlant(mPlant);
-            }
-        });
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(view -> {
+//            // TODO favorite the plant
+//            if (mPlant != null) {
+//                mPlant.setFavourite(!mPlant.isFavourite());
+//                presenter.savePlant(mPlant);
+//            }
+//        });
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
     }
 

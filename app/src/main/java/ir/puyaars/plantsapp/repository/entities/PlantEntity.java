@@ -69,7 +69,7 @@ public class PlantEntity {
     private String herbals;
     private boolean favourite;
 
-    public PlantEntity(int id, String name, String nameRoot, String commonName, String image, String enName, String siName, String family, String identity, List<Spec> specs, String herbals) {
+    public PlantEntity(int id, String name, String nameRoot, String commonName, String image, String enName, String siName, String family, String identity, List<Spec> specs, String herbals,boolean favourite) {
         this.id = id;
         this.name = name;
         this.nameRoot = nameRoot;
@@ -81,7 +81,11 @@ public class PlantEntity {
         this.identity = identity;
         this.specs = specs;
         this.herbals = herbals;
-        this.favourite = false;
+        // ignore the next warning if any
+        // sql knows nothing about null and false are equal in java
+        // if null passed it will error in query execution
+        this.favourite = !favourite ? false : true;
+
     }
 
     public String getImage() {
@@ -192,6 +196,7 @@ public class PlantEntity {
         private String identity;
         private List<Spec> specs;
         private String herbals;
+        private Boolean favourite;
 
         public Builder() {
         }
@@ -254,9 +259,13 @@ public class PlantEntity {
             this.herbals = herbals;
             return this;
         }
+        public Builder withFavourite(Boolean favourite) {
+            this.favourite = favourite;
+            return this;
+        }
 
         public PlantEntity build() {
-            return new PlantEntity(id,name,nameRoot,commonName, image, enName,siName,family,identity,specs,herbals);
+            return new PlantEntity(id,name,nameRoot,commonName, image, enName,siName,family,identity,specs,herbals,favourite);
         }
     }
 }

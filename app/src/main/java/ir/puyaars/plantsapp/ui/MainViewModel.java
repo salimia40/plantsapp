@@ -14,13 +14,14 @@ public class MainViewModel extends AndroidViewModel {
 
     public LiveData<List<PlantEntity>> mPlants;
     public Repository repository;
-
+    public LiveData<List<PlantEntity>> fPlants;
 
     public MainViewModel(@NonNull Application application) {
         super(application);
 
         repository = Repository.getInstance(application.getApplicationContext());
         mPlants = repository.mPlants;
+        fPlants = repository.fPlants;
     }
 
 
