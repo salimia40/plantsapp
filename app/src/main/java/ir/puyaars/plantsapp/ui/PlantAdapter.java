@@ -20,8 +20,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import ir.puyaars.plantsapp.R;
 import ir.puyaars.plantsapp.repository.entities.PlantEntity;
 
@@ -67,16 +65,16 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantHolder>
 
     class PlantHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tileImage)
+
         AppCompatImageView imageView;
 
-        @BindView(R.id.tileText)
         AppCompatTextView textView;
 
         public PlantHolder(@NonNull View itemView) {
             super(itemView);
 
-            ButterKnife.bind(this, itemView);
+            imageView = itemView.findViewById(R.id.tileImage);
+            textView = itemView.findViewById(R.id.tileText);
         }
 
         public void configureWith(PlantEntity plantEntity, Context mContext) {
