@@ -14,7 +14,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import ir.puyaars.plantsapp.R;
 import ir.puyaars.plantsapp.repository.entities.PlantEntity;
+import ir.puyaars.plantsapp.repository.utils.Const;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -25,17 +27,15 @@ public class MainActivity extends AppCompatActivity {
 
 
     private MainViewModel presenter;
-//    private List<PlantEntity> plantsList = new ArrayList<>();
+    private List<PlantEntity> plantsList = new ArrayList<>();
     private PlantAdapter adapter;
 
-    @BindView(R.id.recycler)
     RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ButterKnife.bind(this);
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecycler() {
+        recyclerView = findViewById(R.id.recycler);
         adapter = new PlantAdapter(this);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(this);
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         );
 
         recyclerView.addItemDecoration(decoration);
+        recyclerView.setAdapter(adapter);
 
 
     }
@@ -62,10 +64,12 @@ public class MainActivity extends AppCompatActivity {
     private void initPresenter() {
 
         final Observer<List<PlantEntity>> observer = plantEntities -> {
-//            plantsList.clear();
-//            plantsList.addAll(plantEntities);
+            plantsList.clear();
+            plantsList.addAll(plantEntities);
             // TODO UI CHANGE
-            adapter.setPlants(plantEntities);
+            Log.i(Const.TAG, "initPresenter: " + plantEntities);
+            adapter.setPlants(plantsList);
+//            adapter.notifyDataSetChanged();
         };
 
         presenter = ViewModelProviders.of(this).get(MainViewModel.class);

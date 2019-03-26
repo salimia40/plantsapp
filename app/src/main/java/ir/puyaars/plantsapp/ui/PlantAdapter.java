@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import ir.puyaars.plantsapp.R;
 import ir.puyaars.plantsapp.repository.entities.PlantEntity;
 
 import static ir.puyaars.plantsapp.repository.utils.Const.PLANT_ID_KEY;
+import static ir.puyaars.plantsapp.repository.utils.Const.TAG;
 
 public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantHolder> {
 
@@ -58,6 +60,8 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.PlantHolder>
 
     @Override
     public int getItemCount() {
+
+        Log.i(TAG, "getItemCount: " + mPlants.size());
         return mPlants.size();
     }
 
