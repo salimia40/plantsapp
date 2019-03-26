@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,6 +49,13 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(manager);
+
+        DividerItemDecoration decoration = new DividerItemDecoration(
+                recyclerView.getContext(),manager.getOrientation()
+        );
+
+        recyclerView.addItemDecoration(decoration);
+
 
     }
 
